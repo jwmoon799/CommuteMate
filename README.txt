@@ -108,3 +108,13 @@ https://developer.android.com/tools/zipalign
 
 10 release 1.0 시작 오류 수정
 초기 제출 후보1.0은 부분 R8 최적화로 Kotlin IllegalAccessError가 발생해 제출 금지로 보관했습니다. 1.0.1에서는 해당 최적화를 해제했습니다. 설치 실행기는 실제 프로세스와 화면이 표시되는지도 확인합니다. 수정본을 기존 키로 재서명하고 설치하려면 python3 tools/rebuild_release_demo.py를 실행합니다. 비밀번호는 터미널에서 직접 입력하며 기존 서명키를 다시 만들지 않습니다. 1.0.2에서 기사 전체 본문 읽기와 긴 제목/본문 표시를 수정했습니다. 2026-11-14 사용자 검증: 영어 코스, 뉴스 2편 전체 재생 후 영어4문항/복습, 도착 요약, 깜빡이 정지/재개, 두 모의 안전 경고 확인 완료. 도착 요약 이동은 시연: 도착·주차 버튼으로 수행합니다.
+
+11 공모전 제출 파일
+팀명: 119기
+앱 이름: CommuteMate
+APK: apk/119기_CommuteMate_release.apk
+SHA256: 0ed77e6d61c593c17706183a4256bb797781fee306e2f669202d945e83e7a718
+에뮬레이터: Pleos Connect v2.1.0, Android 34 Pleos Car Emulator arm64-v8a
+전체 화면: 2560x1440 px, 160 dpi, 가로
+GitHub: https://github.com/jwmoon799/CommuteMate
+실행 및 APK 링크는 README.md 참고.

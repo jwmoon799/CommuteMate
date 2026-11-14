@@ -1,5 +1,7 @@
 # CommuteMate · 커뮤트 메이트
 
+**팀명: 119기 · 앱 이름: CommuteMate**
+
 Pleos Connect에서 업무 브리핑, 경제 뉴스, 영어 듣기·따라 말하기를 제공하는 출근 도우미 프로토타입입니다.
 
 ## 포함된 구성
@@ -17,6 +19,8 @@ Pleos Connect에서 업무 브리핑, 경제 뉴스, 영어 듣기·따라 말�
 
 - macOS, Python 3, Android Studio 내장 Java 및 Android SDK.
 - SDK compile/target 37, min 28. Gradle Wrapper를 사용합니다.
+- 검증한 에뮬레이터: **Pleos Connect v2.1.0**, Android 34 Pleos Car Emulator, ARM64 (`arm64-v8a`).
+- 에뮬레이터 전체 화면 규격: **2560 × 1440 px**, **160 dpi**, 가로 화면. 차량 기본 UI와 앱이 함께 표시되므로 앱 영역은 전체 화면보다 작습니다.
 - Pleos Connect Emulator와 Vehicle SDK 저장소 접근이 필요합니다. 기본 AVD 이름은 `Pleos_Connect_v2.1.0`입니다.
 - `ANDROID_HOME`/`ANDROID_SDK_ROOT` 또는 자신의 `local.properties`로 SDK 위치를 지정합니다. AVD 이름 변경은 `COMMUTEMATE_AVD`로 지정합니다.
 - 뉴스 음성 생성에는 macOS `say`의 Yuna 음성과 `afconvert`를 사용합니다. Windows/Linux는 검증하지 않았습니다.
@@ -76,7 +80,16 @@ python3 tools/generate_safety_audio.py --verify-only
 
 ## 제출 APK와 서명
 
-서명된 APK는 별도 제출 파일입니다. 앱 서명키와 비밀번호, 캐시·빌드 출력·기기 내부 자료는 저장소에 포함하지 않습니다.
+제출 파일: [`apk/119기_CommuteMate_release.apk`](apk/119기_CommuteMate_release.apk)
+
+- [APK 직접 다운로드](https://github.com/jwmoon799/CommuteMate/raw/refs/heads/main/apk/119%EA%B8%B0_CommuteMate_release.apk)
+- [SHA-256 체크섬](apk/checksums.sha256) / [서명 검증 결과](apk/signature-verification.txt)
+- [기존 v1.0.2 GitHub Release](https://github.com/jwmoon799/CommuteMate/releases/tag/v1.0.2): 동일한 APK가 기존 파일명으로 보관되어 있습니다.
+- 버전: **1.0.2**, versionCode **3**. 실행 가능한 release APK이며 기존 팀 키로 서명했습니다.
+- 패키지: `com.example.commutemate`. Pleos 호환 환경에서 사용합니다.
+- SHA-256: `0ed77e6d61c593c17706183a4256bb797781fee306e2f669202d945e83e7a718`.
+
+APK 다운로드 후 설치만으로 업무·영어의 포함된 음성은 사용할 수 있습니다. **실시간 뉴스와 3D 연동은 위 실행 절차로 Mac 보조 서버도 실행해야 합니다.** 앱 서명키와 비밀번호, 캐시·빌드 출력·기기 내부 자료는 저장소에 포함하지 않습니다.
 팀에서 기존 키를 보유한 경우 같은 키로 업데이트해야 합니다. 공유받은 팀원은 개발용 빌드로 실행할 수 있습니다.
 
 ```bash

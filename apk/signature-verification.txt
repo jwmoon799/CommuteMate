@@ -1,0 +1,20 @@
+package: name='com.example.commutemate' versionCode='3' versionName='1.0.2' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): false
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=CommuteMate
+Signer #1 certificate SHA-256 digest: 1671847da2d13166e1ae7b3e01ab10e0c1a58e067a2c654e2dd2001d02a69db0
+Signer #1 certificate SHA-1 digest: 7a961ff0f29852b0c29c918a95a42774aec27858
+Signer #1 certificate MD5 digest: 39a50fcad23512eb498be2fa5fff3912
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 3072
+Signer #1 public key SHA-256 digest: 678ec201e44e76f119ec2a2907e242e97e1a33786dad627e493f9f161cac2f30
+Signer #1 public key SHA-1 digest: 9c8de5710da285745da432bb2adf76f8217160b3
+Signer #1 public key MD5 digest: fa3dba34718c195604943d99dc90c0e6
+
+APK SHA256: 0ed77e6d61c593c17706183a4256bb797781fee306e2f669202d945e83e7a718
