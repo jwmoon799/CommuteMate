@@ -1,0 +1,50 @@
+{
+  "briefing": {
+    "source": "briefing.mp3",
+    "sourceSeconds": [
+      0,
+      17.99367
+    ],
+    "leadingSilenceSeconds": 0.5,
+    "trailingSilenceSeconds": 0.3,
+    "durationSeconds": 18.793666666666667,
+    "peak": 26184,
+    "sha256": "b03c406288fb70b093262e1bfe913af1c09763806148d99b179c9fed3d5b2522"
+  },
+  "lesson_commute_question": {
+    "source": "english_q.mp3",
+    "sourceSeconds": [
+      5.55,
+      7.98929
+    ],
+    "leadingSilenceSeconds": 0.5,
+    "trailingSilenceSeconds": 1.5,
+    "durationSeconds": 4.439291666666667,
+    "peak": 26194,
+    "sha256": "78a75b6cd383e74696b9bf4bebe9e61bcbf3734391840e8bc9bf9ba4dcc6763e"
+  },
+  "lesson_commute_answer": {
+    "source": "english_example.mp3",
+    "sourceSeconds": [
+      1.98,
+      4.42
+    ],
+    "leadingSilenceSeconds": 0.5,
+    "trailingSilenceSeconds": 2.5,
+    "durationSeconds": 5.44,
+    "peak": 26196,
+    "sha256": "955ebcf7c2c4bb824963275a236a48dfd6c91682abf3672b5c902ebf6ac8a3b0"
+  },
+  "lesson_duration_answer": {
+    "source": "english_example.mp3",
+    "sourceSeconds": [
+      4.68,
+      7.54
+    ],
+    "leadingSilenceSeconds": 0.5,
+    "trailingSilenceSeconds": 2.5,
+    "durationSeconds": 5.86,
+    "peak": 24637,
+    "sha256": "b21a0f510d5d16554473a4a4f5c8d31b8ced74c80638f96681dfe9c87c340b88"
+  }
+}

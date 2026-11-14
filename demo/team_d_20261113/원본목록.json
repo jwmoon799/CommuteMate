@@ -1,0 +1,86 @@
+{
+  "CommuteMate.mlt": {
+    "bytes": 4838,
+    "sha256": "037edf2f95d5b6267ceeadfb3b562a0f68be56becf716937da34163458d12760"
+  },
+  "D_시연편집예시_105초.mp4": {
+    "bytes": 5518605,
+    "sha256": "e0fb7504809acad7706d12786aea65d4789bbe695e6b91c712a4ac7386696bc9"
+  },
+  "10sec_audio_check.mp4": {
+    "bytes": 144990,
+    "sha256": "c4e50a143c34274239b107f36102d7d8c31fcb796bbd3fc3d0700c1b3aafd88d"
+  },
+  "captions.srt": {
+    "bytes": 688,
+    "sha256": "7fda0c6790dcc1508cdfb079793268134099b7c187d9c79c8db72f31593a1491"
+  },
+  "사용방법.txt": {
+    "bytes": 714,
+    "sha256": "50a9175a0fd8e073d873575718973280830b5a516bf232e41451116de2d53bb4"
+  },
+  "media/english_example.mp3": {
+    "bytes": 224905,
+    "sha256": "79988eb8699202dac07606c537b73301a75246358c8a15a2a9a13d2c9a6c3dd6"
+  },
+  "media/briefing.mp3": {
+    "bytes": 288852,
+    "sha256": "e35c818a69f00bbce6689b697a4cbfda4b81cd071c2784080bc00b29ac2e16cf"
+  },
+  "media/00.png": {
+    "bytes": 49044,
+    "sha256": "a0e7cf99566f8d50c2f38b60c1416f6115e21187dfcb80e246053d0c396864ca"
+  },
+  "media/01.png": {
+    "bytes": 58432,
+    "sha256": "2029067473391df116e3643227f7740dacc859bcd873a3cf72821f93cfc71871"
+  },
+  "media/03.png": {
+    "bytes": 58795,
+    "sha256": "ed68a2cc55c47c92d005c5658b1c54313bda2bdded5f32716608d83d39f83edc"
+  },
+  "media/02.png": {
+    "bytes": 68394,
+    "sha256": "9f3eb7213bb270ea8ce1abbf137fd7d7416289e07d299fcb40fdf351cf37247e"
+  },
+  "media/06.png": {
+    "bytes": 58729,
+    "sha256": "bd99c30781686bf93b2e2c3b1360bfbb6fda5e92ba2ed6a82be53421c8febd36"
+  },
+  "media/07.png": {
+    "bytes": 62880,
+    "sha256": "42f05e54d271641c2ee0eebc9d819320a4db2a02de08fa5590a06e213ba9b824"
+  },
+  "media/route.mp3": {
+    "bytes": 135461,
+    "sha256": "7f92a35abc46b8bd6907d034407b82464d1e7d664a5919de6d6cbab41afc8bff"
+  },
+  "media/05.png": {
+    "bytes": 61185,
+    "sha256": "c02e696f52e0f21a5d7a4b4ccc02c36503ede535efe49e206ed2d7cee3973eea"
+  },
+  "media/04.png": {
+    "bytes": 52016,
+    "sha256": "4f617fe1df029dea284e22e51e42be2fa755d7309350d90cdd716ae5a3298fc0"
+  },
+  "media/ending.mp3": {
+    "bytes": 115817,
+    "sha256": "145dea8e300f783ffbc2228f80d572f4a5b7f6c5f4ae4e46eb90a5f340b7eac9"
+  },
+  "media/08.png": {
+    "bytes": 74845,
+    "sha256": "15ab0c85d2f1c35880cee1ca203ffc4e80d0b119e22ac65051dccf24a04dfc25"
+  },
+  "media/arrival.mp3": {
+    "bytes": 102443,
+    "sha256": "d22b645268c11eb54456dc8d434c49cabbb11fac4aadcd16c95d01d4871c51d9"
+  },
+  "media/intro.mp3": {
+    "bytes": 115399,
+    "sha256": "a152e7ae063e7d06734d768cbb7cbb4642a9ded17883ea1aefe6f2b77cc406c4"
+  },
+  "media/english_q.mp3": {
+    "bytes": 128774,
+    "sha256": "c0dbd333e12409065a929253151ca694accec2ab3d2eb3a24ea7fef75928764c"
+  }
+}

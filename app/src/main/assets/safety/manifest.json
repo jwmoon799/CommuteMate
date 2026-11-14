@@ -1,0 +1,12 @@
+{
+  "lead_departure": {
+    "text": "앞차가 출발했습니다. 전방을 확인하세요.",
+    "seconds": 3.825,
+    "sha256": "fb8d4a30b58fb92b4383e2eaa6fb8aa8d2adb1336b35b66273c4be4304697318"
+  },
+  "attention": {
+    "text": "전방을 주시하세요.",
+    "seconds": 2.05,
+    "sha256": "6421464ae62da0728248f01a10ebeb26ce381bb190baa56c8255bc9d663dcf0a"
+  }
+}

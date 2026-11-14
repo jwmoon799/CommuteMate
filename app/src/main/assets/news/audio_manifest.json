@@ -1,0 +1,14 @@
+{
+  "policy": {
+    "textSha256": "acec02a939b1d21976cb7bbe427e81a001db60025e4d7d4edc53b46886e923d2",
+    "durationSeconds": 32.76,
+    "source": "https://www.bok.or.kr/portal/bbs/P0000559/view.do?depth=200690&menuNo=200690&nttId=11065823&programType=newsData&relate=Y",
+    "publishedAt": "2026-10-22"
+  },
+  "industry": {
+    "textSha256": "7e13cb22abd61528c3a17f5c70f49c63515f40fb2055ba41a6d569eb4f066a50",
+    "durationSeconds": 35.75,
+    "source": "https://www.bok.or.kr/portal/bbs/P0000559/view.do?depth=200690&menuNo=200690&nttId=11065823&programType=newsData&relate=Y",
+    "publishedAt": "2026-10-22"
+  }
+}

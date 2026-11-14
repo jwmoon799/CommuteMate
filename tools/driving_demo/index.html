@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Commute Mate · 가상 주행</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101b24;color:#f5f7f9;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;overflow:hidden}canvas{display:block;width:100vw;height:100vh}header{position:absolute;top:30px;left:32px;right:32px;display:flex;align-items:start;justify-content:space-between;pointer-events:none}.brand{font-size:12px;letter-spacing:3px;color:#afc1ce;margin-bottom:12px}h1{font-size:25px;letter-spacing:-1px;margin:0;font-weight:550}.pill{border:1px solid #ffffff30;padding:9px 13px;border-radius:30px;font-size:12px;background:#101b2455}.route{position:absolute;left:32px;top:129px;border-left:2px solid #ff9138;padding:0 0 0 16px}.route small{display:block;color:#bed0dd;font-size:12px;margin-bottom:7px}.route strong{font-weight:500;font-size:18px}.bottom{position:absolute;left:32px;bottom:31px;right:32px;display:flex;align-items:end;justify-content:space-between;gap:20px}.speed b{font-size:58px;line-height:1;font-weight:300;letter-spacing:-3px}.speed span{font-size:13px;color:#becbd4;margin-left:8px}.status{margin-top:12px;font-size:12px;color:#c3d1d9}.controls{display:flex;flex-wrap:wrap;gap:7px;justify-content:end;max-width:430px}button{cursor:pointer;color:#e6eef3;background:#142531db;border:1px solid #879daa66;border-radius:8px;padding:11px 14px;font:inherit;font-size:12px;backdrop-filter:blur(8px)}button:hover,button:focus-visible{background:#345064;outline:2px solid #b7d7e7}button.active{color:#ffad68;border-color:#ff9138;background:#382b21df}button.primary{background:#ff9138;color:#17232b;border-color:#ff9138;font-weight:650}.notice{position:absolute;left:32px;bottom:129px;color:#c3d1d9;font-size:11px;letter-spacing:.1px}.error{position:absolute;inset:0;display:grid;place-content:center;text-align:center;background:#152633;padding:30px;z-index:5}.error[hidden]{display:none}.film header,.film .route,.film .bottom{opacity:0;pointer-events:none}.film:hover #filmExit{opacity:1}#filmExit{position:absolute;top:20px;right:20px;opacity:0;display:none}.film #filmExit{display:block;pointer-events:auto}.film #filmExit:focus{opacity:1}@media(max-width:650px){header{left:20px;right:20px;top:22px}h1{font-size:20px}.pill{font-size:10px}.route{left:20px;top:110px}.bottom{left:20px;right:20px;bottom:20px}.speed b{font-size:42px}.controls{max-width:280px;gap:5px}button{padding:10px;font-size:11px}.notice{left:20px;bottom:151px;max-width:260px;line-height:18px}}
+.safety-hud{position:absolute;top:38%;left:8%;right:8%;padding:18px;background:#18232af2;border:2px solid #ffb74d;border-radius:14px;text-align:center;font-size:25px;color:#fff;pointer-events:none}.safety-hud small{display:block;font-size:13px;color:#ffc784;margin-top:12px}.safety-hud[hidden]{display:none}button.safety{border-color:#ffb74d;color:#ffc784}
+</style>
+<canvas id="scene" aria-label="도시 도로를 달리는 흰색 자동차의 가상 3D 주행 화면"></canvas>
+<header><div><div class="brand">COMMUTE MATE</div><h1>출근길에 더하는 작은 성장</h1></div><div class="pill">가상 주행 · 시연용</div></header>
+<div class="route"><small>08:30 · MORNING COMMUTE</small><strong>우리 집 → 회사</strong></div>
+<div class="notice">가상 주행 · Pleos 에뮬레이터 방향지시등 연동 · 실제 차량 제어 아님</div>
+<div class="bottom"><div class="speed"><b id="speed">0</b><span>km/h · 가상 속도</span><div class="status" id="status" aria-live="polite">출발 준비</div></div><div class="controls"><button id="play" class="primary">주행 시작</button><button id="left" aria-pressed="false">← 좌회전</button><button id="right" aria-pressed="false">우회전 →</button><button id="camera">시점 변경</button><button id="film">촬영 모드</button><button id="reset">처음으로</button><button id="leadWarning" class="safety">시연: 앞차 출발</button><button id="attentionWarning" class="safety">시연: 전방 주시</button></div></div><button id="filmExit">촬영 모드 종료 · Esc</button>
+<div id="safetyHud" class="safety-hud" hidden><span id="safetyMessage"></span><small>경고 이벤트 시연 · 실제 센서 감지 아님</small></div>
+<div id="error" class="error" hidden><h2>3D 화면을 열 수 없어요</h2><p>WebGL을 지원하는 브라우저에서 다시 열어주세요.</p></div>
+<script src="turn-route.js"></script>
+<script>
+'use strict';
+const canvas=document.getElementById('scene'), gl=canvas.getContext('webgl',{antialias:false,alpha:false,powerPreference:'low-power'});
+if(!gl){document.getElementById('error').hidden=false;}else{
+const vs=`attribute vec3 p;attribute vec3 n;uniform mat4 vp;uniform mat4 model;uniform vec3 color;varying vec3 c;varying float depth;void main(){vec4 world=model*vec4(p,1.);vec3 normal=normalize(mat3(model)*n);float light=.55+.45*max(dot(normal,normalize(vec3(-.5,1.,.6))),0.);c=color*light;gl_Position=vp*world;depth=gl_Position.w;}`;
+const fs=`precision mediump float;varying vec3 c;varying float depth;void main(){float fog=1.-exp(-max(depth,0.)*.005);gl_FragColor=vec4(mix(c,vec3(.60,.72,.79),min(fog,.87)),1.);}`;
+function shader(kind,src){let s=gl.createShader(kind);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
+let program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,vs));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);
+const vertices=[];
+function face(a,b,c,d,n){for(const v of [a,b,c,a,c,d])vertices.push(...v,...n);}
+face([-.5,-.5,.5],[.5,-.5,.5],[.5,.5,.5],[-.5,.5,.5],[0,0,1]);face([.5,-.5,-.5],[-.5,-.5,-.5],[-.5,.5,-.5],[.5,.5,-.5],[0,0,-1]);face([-.5,.5,.5],[.5,.5,.5],[.5,.5,-.5],[-.5,.5,-.5],[0,1,0]);face([-.5,-.5,-.5],[.5,-.5,-.5],[.5,-.5,.5],[-.5,-.5,.5],[0,-1,0]);face([.5,-.5,.5],[.5,-.5,-.5],[.5,.5,-.5],[.5,.5,.5],[1,0,0]);face([-.5,-.5,-.5],[-.5,-.5,.5],[-.5,.5,.5],[-.5,.5,-.5],[-1,0,0]);
+const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.STATIC_DRAW);for(const [name,offset] of [['p',0],['n',12]]){let a=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,3,gl.FLOAT,false,24,offset);}
+const loc=Object.fromEntries(['vp','model','color'].map(x=>[x,gl.getUniformLocation(program,x)]));
+function multiply(a,b){let r=new Float32Array(16);for(let c=0;c<4;c++)for(let row=0;row<4;row++)for(let k=0;k<4;k++)r[c*4+row]+=a[k*4+row]*b[c*4+k];return r;}
+function normalize(a){let l=Math.hypot(...a);return a.map(v=>v/l);}function cross(a,b){return[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];}function dot(a,b){return a.reduce((s,x,i)=>s+x*b[i],0);}
+function view(eye,target){let z=normalize(eye.map((v,i)=>v-target[i])),x=normalize(cross([0,1,0],z)),y=cross(z,x);return new Float32Array([x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-dot(x,eye),-dot(y,eye),-dot(z,eye),1]);}
+function perspective(aspect){let f=1/Math.tan(.82/2),near=.2,far=400;return new Float32Array([f/aspect,0,0,0,0,f,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0]);}
+const model=new Float32Array(16);function box(x,y,z,w,h,d,color,yaw=0){let c=Math.cos(yaw),s=Math.sin(yaw);model.fill(0);model[0]=w*c;model[2]=-w*s;model[5]=h;model[8]=d*s;model[10]=d*c;model[12]=x;model[13]=y;model[14]=z;model[15]=1;gl.uniformMatrix4fv(loc.model,false,model);gl.uniform3fv(loc.color,color);gl.drawArrays(gl.TRIANGLES,0,36);}
+const C={road:[.18,.23,.26],line:[.87,.88,.80],walk:[.49,.57,.57],grass:[.31,.43,.34],trunk:[.33,.28,.23],leaf:[.22,.39,.32],white:[.88,.91,.89],glass:[.10,.22,.29],black:[.07,.09,.10],metal:[.42,.49,.52],red:[.83,.13,.11],amber:[1,.47,.09]};
+let running=false,signal=0,camera=1,t=0,distance=0,velocity=0,last=0,prevDraw=0,film=false,frames=0;
+let lane=-2.9;
+let safetyScene=null,safetyTimer=null;
+const route=new TurnRoute();let vehicleOnline=false,currentId=null,lastMode='Off',sending=false,finishing=null,lastPoll=0,stateRevision=-1,serverId=null;
+async function post(path,body){const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json','X-Commute-Drive':'1'},body:JSON.stringify(body)});const data=await r.json();if(!r.ok)throw Error(data.error||'연결 오류');return data;}
+function applyVehicle(state){
+ if(state.serverId!==serverId){serverId=state.serverId;stateRevision=-1;currentId=null;}
+ if(state.revision<stateRevision)return;stateRevision=state.revision;
+ vehicleOnline=state.online===true;
+ if(!vehicleOnline){$('status').textContent='차량 신호 연결 끊김 · 회전 진행 대기';return;}
+ const mode=state.mode;
+ if(mode==='Off'){signal=0;route.signalOff();currentId=null;finishing=null;}
+ else{signal=mode.includes('Left')?-1:1;if(state.turnId!==currentId){currentId=state.turnId;route.begin(signal,currentId);running=true;finishing=null;}}
+ lastMode=mode;sync();
+}
+async function pollVehicle(){if(sending)return;try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error('offline');applyVehicle(await r.json());}catch(e){vehicleOnline=false;$('status').textContent='연결 대기 · 연동 실행기를 켜주세요';}}
+async function setSignal(direction){if(sending||!vehicleOnline)return;sending=true;try{applyVehicle(await post('/api/signal',{mode:signal===direction?'Off':direction<0?'BlinkLeft':'BlinkRight'}));}catch(e){$('status').textContent=e.message;}finally{sending=false;}}
+async function finishTurn(id){if(finishing===id)return;finishing=id;try{applyVehicle(await post('/api/turn-complete',{turnId:id}));}catch(e){$('status').textContent=e.message;/* Never locally pretend OFF or resume the Android lesson. */}}
+
+const $=id=>document.getElementById(id);
+async function sendSafety(kind){
+ try{await post('/api/safety-demo',{kind});$('safetyMessage').textContent=kind==='lead_departure'?'앞차가 출발했습니다. 전방을 확인하세요.':'전방을 주시하세요.';$('safetyHud').hidden=false;}
+ catch(e){$('safetyMessage').textContent='경고 전송 실패 · '+e.message;$('safetyHud').hidden=false;}
+}
+function startSafety(kind){
+ clearTimeout(safetyTimer);safetyScene={kind,start:performance.now()};
+ if(kind==='lead_departure'){
+  running=false;velocity=0;sync();$('safetyHud').hidden=true;
+  // Show a stopped lead car for one second, then depart and send a demo event.
+  safetyTimer=setTimeout(()=>sendSafety(kind),1000);
+ }else{sendSafety(kind);}
+}
+$('leadWarning').onclick=()=>startSafety('lead_departure');
+$('attentionWarning').onclick=()=>startSafety('attention');
+function sync(){ $('play').textContent=running?'주행 일시정지':'주행 시작';$('left').classList.toggle('active',signal===-1);$('right').classList.toggle('active',signal===1);$('left').setAttribute('aria-pressed',signal===-1);$('right').setAttribute('aria-pressed',signal===1);$('left').disabled=!vehicleOnline;$('right').disabled=!vehicleOnline;$('status').textContent=(vehicleOnline?'차량 신호 연결됨 · ':'연결 대기 · ')+route.stage()+' · '+route.lane+'차선';}
+$('play').onclick=()=>{running=!running;sync();};$('left').onclick=()=>setSignal(-1);$('right').onclick=()=>setSignal(1);$('camera').onclick=()=>{camera=(camera+1)%3;};
+function filming(value){film=value;document.body.classList.toggle('film',film);}$('film').onclick=()=>filming(true);$('filmExit').onclick=()=>filming(false);window.addEventListener('keydown',e=>{if(e.code==='Escape')filming(false);if(e.code==='Space'&&e.target===document.body){e.preventDefault();running=!running;sync();}});
+$('reset').onclick=()=>{clearTimeout(safetyTimer);safetyScene=null;$('safetyHud').hidden=true;if(signal!==0){$('status').textContent='먼저 깜빡이를 OFF로 바꿔주세요.';return;}running=false;velocity=0;distance=0;lane=-2.9;camera=1;route.reset();sync();$('speed').textContent='0';};
+function car(x,z,color,ind=0,scale=1,yaw=0){const f=(a,y,b,w,h,d,c)=>box(x+(a*Math.cos(yaw)-b*Math.sin(yaw))*scale,y*scale,z+(a*Math.sin(yaw)+b*Math.cos(yaw))*scale,w*scale,h*scale,d*scale,c,-yaw);f(0,.09,0,2.7,.04,5.2,[.22,.29,.29]);f(0,.87,0,2.05,.68,4.25,color);f(0,1.48,-.08,1.77,.67,2.55,C.glass);f(0,1.87,.0,1.85,.12,2.65,color);f(0,1.14,-1.46,1.98,.18,1.12,color);f(0,1.20,1.52,2,.19,1,color);f(0,.62,2.14,1.9,.19,.09,C.black);f(0,.77,2.20,.50,.18,.025,C.white);f(0,1.19,1.24,1.85,.07,.05,C.white);f(0,1.35,1.30,1.65,.07,.05,C.red);for(const side of [-1,1]){f(side*.86,1.05,2.15,.26,.16,.06,C.red);f(side*1.07,1.30,-.75,.25,.17,.31,color);for(const az of [-1.34,1.35]){f(side*1.02,.49,az,.28,.73,.76,C.black);f(side*1.17,.49,az,.025,.42,.43,C.metal);}f(side*.86,1.03,-2.14,.28,.13,.04,C.white);}if(ind&&Math.floor(t*2.7)%2===0){f(ind*.88,1.13,2.19,.28,.16,.07,C.amber);f(ind*1.20,1.3,-.75,.06,.08,.28,C.amber);}}
+function resize(){let ratio=Math.min(devicePixelRatio||1,1.25,1280/innerWidth),w=Math.max(1,Math.floor(innerWidth*ratio)),h=Math.max(1,Math.floor(innerHeight*ratio));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}}
+function draw(now){requestAnimationFrame(draw);if(document.hidden){last=now;return;}if(now-prevDraw<(!running&&velocity<.1&&signal===0?150:32))return;prevDraw=now;let dt=Math.min((now-(last||now))/1000,.08);last=now;t+=dt;
+ if(now-lastPoll>250){lastPoll=now;pollVehicle();}
+ velocity+=((running?(signal?24:56):0)-velocity)*Math.min(dt*2,1);distance+=velocity/3.6*dt;
+ if(vehicleOnline){const done=route.advance(dt,velocity/3.6,running);if(done)finishTurn(done);}
+ const pos=route.pose();lane=route.laneX;resize();gl.clearColor(.60,.72,.79,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);
+ function world(a,y,b){return[pos.x+a*Math.cos(pos.h)-b*Math.sin(pos.h),y,pos.z+a*Math.sin(pos.h)+b*Math.cos(pos.h)];}
+ const eye=camera===0?world(6.8,6.8,14):camera===1?world(.3,4.2,12.8):world(10,6,9),target=world(0,.5,-11);gl.uniformMatrix4fv(loc.vp,false,multiply(perspective(canvas.width/canvas.height),view(eye,target)));
+ box(pos.x,-.25,pos.z,650,.3,650,C.grass);
+ // Sample the actual centerline: two lanes follow a continuous 90-degree corner.
+ const start=Math.floor((route.s-55)/3)*3;
+ for(let i=0;i<95;i++){
+  const at=start+i*3,p=route.center(at),q=route.center(at+3),h=Math.atan2(q.x-p.x,-(q.z-p.z)),mx=(p.x+q.x)/2,mz=(p.z+q.z)/2,len=Math.hypot(q.x-p.x,q.z-p.z)+.15;
+  box(mx,-.015,mz,13,.15,len,C.road,-h);
+  for(const side of [-1,1]){box(mx+Math.cos(h)*side*7.1,.02,mz+Math.sin(h)*side*7.1,1.3,.18,len,C.walk,-h);box(mx+Math.cos(h)*side*6,.075,mz+Math.sin(h)*side*6,.1,.02,len,C.line,-h);}
+  if(i%3!==0)box(mx,.08,mz,.12,.02,len,C.line,-h);
+  if(i%5===0)for(const side of [-1,1]){
+   let xx=mx+Math.cos(h)*side*19,zz=mz+Math.sin(h)*side*19,height=10+((Math.floor(at/15)+999)%4)*4;
+   box(xx,height/2,zz,9,height,9,[.48,.56,.59],-h);
+   for(let floor=3;floor<height;floor+=3)box(xx-Math.cos(h)*side*4.55,floor,zz-Math.sin(h)*side*4.55,.04,1,6,[.28,.39,.44],-h);
+   // Keep trees beyond the shoulder so they do not cover the chase camera.
+   xx=mx+Math.cos(h)*side*10.8;zz=mz+Math.sin(h)*side*10.8;
+   box(xx,1.2,zz,.24,2.4,.24,C.trunk);box(xx,3.2,zz,2.0,2.4,2.0,C.leaf);
+  }
+ }
+ if(safetyScene){
+  const age=(now-safetyScene.start)/1000;
+  if(safetyScene.kind==='lead_departure'&&age<10){const lead=world(0,0,-(8+Math.max(0,age-1)*4));car(lead[0],lead[2],[.30,.48,.64],0,1,pos.h);}
+  if(age>10){$('safetyHud').hidden=true;safetyScene=null;}
+ }
+ car(pos.x,pos.z,C.white,signal,1,pos.h);
+ if(frames++%8===0){$('speed').textContent=Math.round(vehicleOnline?velocity:0);if(vehicleOnline)sync();}}
+window.addEventListener('webglcontextlost',e=>{e.preventDefault();$('error').hidden=false;});
+pollVehicle();requestAnimationFrame(draw);
+}
+</script></html>
