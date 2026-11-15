@@ -102,3 +102,14 @@ python3 tools/rebuild_release_demo.py
 
 뉴스는 뉴시스 경제 RSS 및 공개 기사 페이지에서 실행 시 조회합니다. 기사 본문·생성한 최신 뉴스 캐시는 이 저장소에 포함하지 않습니다.
 음성·영상은 팀 제작 자료이며, 외부 SDK와 의존성은 각 제공자의 조건을 따릅니다. 이 저장소의 공개 라이선스는 별도로 지정하지 않았습니다.
+
+
+## 기획서와 최종 영상
+
+- [기획서 공개용 사본](submission/CommuteMate_Proposal_Public.docx): 개인정보·동의·서명 제외.
+- [실제 앱 시연 영상](submission/CommuteMate_Demo.mp4): 약 2분 30초.
+- [팀 홍보 릴스](submission/CommuteMate_Reels.mp4): 약 55초 세로 영상.
+- [릴스 게시물](https://www.instagram.com/reel/DfwY1ZUoHsd/)
+- [자료 설명](submission/README.txt), [체크섬](submission/checksums.sha256)
+
+**접수 메일에 기재한 제출 버전은 [`974ba85e3f103b338f49406b54eb22ee9f379385`](https://github.com/jwmoon799/CommuteMate/tree/974ba85e3f103b338f49406b54eb22ee9f379385)입니다.** 이후 자료 추가는 보관 목적이며 제출 당시 앱 소스·APK는 변경하지 않았습니다. 실제 제출한 개인정보 포함 신청서·동의서는 공개하지 않습니다.
